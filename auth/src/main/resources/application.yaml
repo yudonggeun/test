@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: ${APPLICATION_PROFILE:local}
+  application:
+    name: auth
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+jwt:
+  access:
+    duration: ${JWT_ACCESS_DURATION:3600000} #  default 1hour ms
+  refresh:
+    duration: ${JWT_REFRESH_DURATION:86400000} # default 1day ms
+  secret: ${JWT_SECRET:7310017347f7c684c8db4dd693f05a79f329b573bdf656410c8720af925f52fd}
