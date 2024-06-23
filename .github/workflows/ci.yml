@@ -30,9 +30,9 @@ jobs:
       # Gradle jib를 통한 이미지 배포
       - name: update image using jib
         run: |
-          ./gradlew --info auth:jib
-          ls -al
+          ./gradlew --info auth:openapi3
           ls auth/src/main/resources/static -al
+          ./gradlew --info auth:jib
 
   # tagging:
   #   needs:
