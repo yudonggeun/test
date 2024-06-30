@@ -26,6 +26,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+          
+      - name: make api documents
+        run: ./gradlew --info openapi3
   
       - name: configure openapi3 spec
         run: |
