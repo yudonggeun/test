@@ -26,13 +26,29 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # Gradle jib를 통한 이미지 배포
-      - name: update image using jib
+  
+      - name: configure openapi3 spec
         run: |
-          ./gradlew --info auth:openapi3
-          ls auth/src/main/resources/static -al
-          ./gradlew --info auth:jib
+          yq eval -i '.components.securitySchemes.bearerAuth.type = "http"' ./server/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.scheme = "bearer"' ./server/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.bearerFormat = "JWT"' ./server/src/main/resources/static/openapi3.yaml
+          yq eval -i '.security[0].bearerAuth = []' ./server/src/main/resources/static/openapi3.yaml
+          
+          yq eval -i '.components.securitySchemes.bearerAuth.type = "http"' ./user/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.scheme = "bearer"' ./user/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.bearerFormat = "JWT"' ./user/src/main/resources/static/openapi3.yaml
+          yq eval -i '.security[0].bearerAuth = []' ./user/src/main/resources/static/openapi3.yaml
+          
+          yq eval -i '.components.securitySchemes.bearerAuth.type = "http"' ./auth/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.scheme = "bearer"' ./auth/src/main/resources/static/openapi3.yaml
+          yq eval -i '.components.securitySchemes.bearerAuth.bearerFormat = "JWT"' ./auth/src/main/resources/static/openapi3.yaml
+          yq eval -i '.security[0].bearerAuth = []' ./auth/src/main/resources/static/openapi3.yaml
+          
+      - name: cat openapi3 spec
+        run: |
+          cat ./server/src/main/resources/static/openapi3.yaml
+          cat ./user/src/main/resources/static/openapi3.yaml
+          cat ./auth/src/main/resources/static/openapi3.yaml
 
   # tagging:
   #   needs:
